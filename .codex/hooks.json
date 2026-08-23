@@ -1,0 +1,1 @@
+{"hooks":{"PreToolUse":[{"matcher":".*","hooks":[{"type":"command","command":"bash \"$PWD/.codex/hook.sh\"","timeout":10}]}]}}

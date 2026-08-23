@@ -1,0 +1,17 @@
+{
+  "name": "yc-the-fast-hackathon",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun --watch src/daemon.ts",
+    "test": "bun test",
+    "daemon": "bun run src/daemon.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
