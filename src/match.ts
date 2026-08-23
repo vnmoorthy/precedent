@@ -128,6 +128,12 @@ export function evaluate(
   file: PatchedFile,
   rulings: readonly Ruling[],
 ): Violation | null {
+  // Updates must be evaluated against reconstructed post-patch content. If the
+  // daemon could not read or apply the hunks, fail open for this file.
+  if (file.operation === "update" && file.resultingContent === undefined) {
+    return null;
+  }
+
   for (const ruling of rulings) {
     const inScope =
       matchesPathGlob(file.relPath, ruling.path_glob) ||
@@ -148,10 +154,13 @@ export function evaluate(
     );
     if (requirementIsPresent) continue;
 
+    const lineNo = file.addedLineNumbers[candidateIndex];
+    if (file.operation === "update" && typeof lineNo !== "number") continue;
+
     return {
       ruling,
       line: file.added[candidateIndex]!,
-      lineNo: candidateIndex + 1,
+      lineNo: lineNo ?? candidateIndex + 1,
     };
   }
 

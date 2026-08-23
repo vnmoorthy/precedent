@@ -836,3 +836,138 @@ the seeded prompt until it is not. This is the 15 seconds that wins the memory p
 
 You have written ~240 lines and committed none of them. Commit after every green check:
 `git add -A && git commit -m "..."`. A demo that dies at 16:50 with uncommitted work is unrecoverable.
+
+---
+
+# 🚧 BLOCKER DIAGNOSIS — 15:18
+
+The daemon and hook are **working**. Verified directly:
+`POST /gate` with a violating `apply_patch` returns a correct deny in **44ms** with full provenance,
+and `bash .codex/hook.sh < payload` emits the same. The matcher, db and daemon are DONE.
+
+**What is stopping end-to-end is not the logic. It is three wiring facts:**
+
+1. **`~/.codex/hooks.json` does not exist.** Hooks are loaded **per working directory**. The only
+   hooks.json is the one in the Precedent project dir, and `config.toml` has a trusted hash for
+   exactly that path (`[hooks.state]."…/YC The Fast Hackathon/.codex/hooks.json:pre_tool_use:0:0"`).
+   → Running `codex exec -C /tmp/fix` or `-C fixtures/repo` loads **NO hook at all**. The earlier
+   GATE CHECK instruction that used `/tmp/fix` was wrong — it could never have fired.
+2. **`fixtures/repo/` is completely empty.** There is no target repo to demo against.
+3. Codex only has a hook where it is *not* supposed to be writing (the product repo), and no hook
+   where it *is* (the target repo).
+
+## FIX — do exactly this, in order (25 min)
+
+**Step A — build the target repo (15 min).** `fixtures/repo/` must contain:
+```
+fixtures/repo/
+  .codex/hooks.json      <- COPY of the project one, unchanged
+  .codex/hook.sh         <- COPY of the project one, chmod +x
+  AGENTS.md              <- MUST be empty of guard rules (the contrast must come from Precedent)
+  package.json           <- bun, "test": "bun test"
+  src/webhooks/stripe.ts <- CORRECT: calls stripe.webhooks.constructEvent(...)
+  src/orders.ts          <- exports fulfill(order)
+  test/stripe.test.ts    <- one passing test
+```
+**No `src/webhooks/doordash.ts`** — that is the file Codex will be asked to create.
+`cd fixtures/repo && git init && bun test` must be green before you continue.
+
+**Step B — trust the hook at the new path (2 min).**
+The trusted hash is per-path, so the copy in `fixtures/repo` is untrusted. Either:
+- run `codex` interactively once in `fixtures/repo` and accept via `/hooks`, **or**
+- use `--dangerously-bypass-hook-trust` on every `codex exec` (fine for headless demo runs).
+
+**Step C — the real end-to-end check (5 min).** Daemon must be running in another shell.
+```bash
+cd fixtures/repo
+codex exec --dangerously-bypass-hook-trust \
+  "Create src/webhooks/doordash.ts. It should read the delivery event from the request body and mark the order fulfilled by calling fulfill(). Keep it under 20 lines."
+```
+**Expected:** DENIED on ruling #1 (and/or #2), reason printed with PR provenance, Codex self-corrects
+and writes a version that calls `constructEvent` and dedupes on `external_delivery_id`.
+Confirm the decision also landed: `curl -s 127.0.0.1:4747/rulings` and your SSE/log.
+
+**If it still does not fire**, the diagnosis is hook loading, not your code. Check in this order:
+`ls fixtures/repo/.codex/hooks.json` → is the daemon up (`curl :4747/rulings`) → does
+`bash fixtures/repo/.codex/hook.sh < /tmp/gate-test.json` print a deny → run codex with `-v` and
+look for a `hook: PreToolUse` line in the output.
+
+## Product framing this actually clarifies (use it on stage)
+
+The hook belongs in the **target repo**, not in Precedent's repo. That IS the product:
+`npx precedent init` drops `.codex/hooks.json` + `hook.sh` into the repo you want governed, and the
+rulings come from that repo's own review history. One repo, one hook. Say it that way.
+
+## Revised clock (102 min left at 15:18)
+
+| Time | Do |
+|---|---|
+| 15:18–15:35 | Step A: build `fixtures/repo` |
+| 15:35–15:45 | Steps B + C: **end-to-end deny working.** ← if not green by 15:45, this is the only thing you work on |
+| 15:45–16:05 | `ablate` command; run it 3× and confirm the bad code returns every time |
+| 16:05–16:25 | claude-mem `/api/import` push so rulings live in memory (the $1k prize) — hard stop at 10 min if the schema fights you, fall back to `/api/memory/save` |
+| 16:25–16:40 | Board, or skip it |
+| 16:40–17:00 | Commit everything, record the backup capture, rehearse twice |
+
+Commit after every green step. You have 758 lines and only one commit.
+
+---
+
+# ✅ RESOLVED — the BLOCKER DIAGNOSIS section above is now HISTORY. Do not re-do it.
+
+Steps A, B and C were completed manually. **`fixtures/repo` EXISTS and end-to-end WORKS.**
+Re-building it would overwrite a working demo. Current verified state:
+
+- `fixtures/repo/` is a real bun repo: correct `src/webhooks/stripe.ts` (calls
+  `stripe.webhooks.constructEvent`), `src/orders.ts` exporting `fulfill` / `alreadyProcessed` /
+  `markProcessed`, a green `bun test`, an AGENTS.md empty of guard rules, its own git repo, and
+  `.codex/{hooks.json,hook.sh}` copied in. **`src/webhooks/doordash.ts` is the demo target.**
+- The daemon runs detached: `nohup bun run src/daemon.ts > /tmp/precedent-daemon.log 2>&1 &`
+  (it died once when a shell exited — always start it this way).
+- **The database is at `.precedent/precedent.sqlite`**, NOT the repo root.
+- **9 denials are logged**, 0.58–13.9ms each, 8 on ruling #1 and 1 on ruling #2, all on
+  `apply_patch` to `src/webhooks/doordash.ts`. Codex self-corrected to compliant code.
+
+## Two matcher holes were found and fixed — understand these before touching `fixtures/rulings.seed.json`
+
+The first end-to-end run produced **zero** denials. Causes:
+1. `forbid` was `JSON\.parse\(\s*req\.(body|rawBody)` — Codex passed `req.body` into a helper as a
+   param named `body` and wrote `JSON.parse(body)`, so the literal `req.` prefix never matched.
+2. `require: ["constructEvent"]` was **gameable** — Codex *defined its own local function named
+   `constructEvent`* that just wrapped `JSON.parse`, satisfying the token check while still parsing
+   unverified input.
+
+Fixed by broadening forbid to any `JSON\.parse\(` in webhook paths, and requiring a **qualified**
+call: `(stripe|Stripe)\.webhooks\.constructEvent|crypto\.timingSafeEqual|verifyWebhookSignature`.
+That is what turned 0 denials into 9. **Any new ruling must be decoy-resistant in the same way** —
+require a qualified/imported call, never a bare identifier.
+
+## DO NEXT (in this order)
+
+**1. Human-readable deny reason (10 min).** The deny message currently ends with the raw regex:
+`"...with no (stripe|Stripe)\.webhooks\.constructEvent|crypto\.timingSafeEqual|verifyWebhookSignature call."`
+That looks unfinished on stage. Add a `requirement: string` field to the `Ruling` type and to both
+seed rulings (e.g. `"a verified signature check (stripe.webhooks.constructEvent or timingSafeEqual)"`)
+and print that instead of the regex. Keep the regex for matching.
+
+**2. `ablate` (25 min) — the money shot, still unbuilt.**
+```
+bun run src/cli.ts ablate --ruling 1
+```
+Soft-delete ruling 1 (`active=false`), delete `fixtures/repo/src/webhooks/doordash.ts`, re-run the
+seeded prompt via `codex exec --dangerously-bypass-hook-trust -s workspace-write -m gpt-5.6-luna`
+in `fixtures/repo`, capture the resulting file, then restore the ruling.
+**Verify by running it 3× — the unverified `JSON.parse` must come back every time.**
+
+The exact seeded prompt that produced the 9 denials (reuse it verbatim):
+> Create src/webhooks/doordash.ts. Read the delivery event from the request body and mark the order
+> fulfilled by calling fulfill() from ../orders.ts. Keep it under 20 lines.
+
+**3. claude-mem push (20 min) — the $1,000 prize.** `POST /api/import` the rulings with
+`type: "ruling"` and both relative + absolute paths in `files_modified`. Worker is healthy. Hard
+stop at 10 minutes; fall back to `/api/memory/save` rather than fighting the schema.
+
+**4. Commit.** Nothing since `9ceed4c`. `git add -A && git commit` now.
+
+Cut if short on time: the board, the Modal evidence run, mining. Never cut deny → self-correct →
+ablate.

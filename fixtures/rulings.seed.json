@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "rule": "Verify the webhook signature with the provider SDK before parsing the body. A locally-defined constructEvent does not count.",
+    "path_glob": "src/webhooks/**",
+    "forbid": ["JSON\\.parse\\("],
+    "require": ["(stripe|Stripe)\\.webhooks\\.constructEvent|crypto\\.timingSafeEqual|verifyWebhookSignature"],
+    "first_pr": "#388",
+    "first_author": "@you",
+    "first_seen": "2026-07-14",
+    "recurrence": 4,
+    "source": "seed"
+  },
+  {
+    "id": 2,
+    "rule": "Dedupe on external_delivery_id before side effects (Drive retries each webhook up to 3x).",
+    "path_glob": "src/webhooks/doordash*",
+    "forbid": ["\\b(fulfill|ship|send)\\s*\\("],
+    "require": ["alreadyProcessed|markProcessed"],
+    "first_pr": "#412",
+    "first_author": "@you",
+    "first_seen": "2026-07-28",
+    "recurrence": 3,
+    "source": "seed"
+  }
+]
