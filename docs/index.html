@@ -3,90 +3,233 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Precedent — your team said it once</title>
+<title>PRECEDENT</title>
+<meta name="description" content="Review rulings, enforced at the moment the agent writes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-:root{--bg:#0d0f12;--card:#151a20;--line:#242c35;--ink:#e9eef3;--dim:#8b98a6;
---deny:#ff5c47;--allow:#3ddc84;--accent:#ffb454}
-*{box-sizing:border-box;margin:0}
-body{background:var(--bg);color:var(--ink);font:16px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;-webkit-font-smoothing:antialiased}
-.wrap{max-width:880px;margin:0 auto;padding:64px 24px 96px}
-.tag{color:var(--accent);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
-h1{font-size:clamp(38px,7vw,64px);line-height:1.02;letter-spacing:-.03em;margin:14px 0 10px;font-family:ui-sans-serif,system-ui;font-weight:800}
-.sub{color:var(--dim);font-size:19px;max-width:60ch;font-family:ui-sans-serif,system-ui}
-.cta{display:inline-block;margin-top:26px;background:var(--ink);color:var(--bg);padding:11px 22px;border-radius:8px;text-decoration:none;font-weight:700}
-.cta.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);margin-left:10px}
-.term{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:56px 0;overflow:hidden;box-shadow:0 24px 60px -30px rgba(0,0,0,.8)}
-.term .bar{display:flex;gap:7px;padding:12px 14px;border-bottom:1px solid var(--line)}
-.term .dot{width:11px;height:11px;border-radius:50%;background:#2c3540}
-.term .dot:first-child{background:#ff5f57}.term .dot:nth-child(2){background:#febc2e}.term .dot:nth-child(3){background:#28c840}
-.term pre{padding:20px 22px;font-size:13.5px;line-height:1.7;overflow-x:auto;white-space:pre-wrap}
-.deny{color:var(--deny);font-weight:700}
-.ok{color:var(--allow)}
-.dim{color:var(--dim)}
-h2{font-family:ui-sans-serif,system-ui;font-size:26px;letter-spacing:-.01em;margin:64px 0 16px}
-p{color:var(--dim);max-width:64ch;font-family:ui-sans-serif,system-ui}
-p b, p strong{color:var(--ink)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:24px 0}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
-.stat .n{font-size:34px;font-weight:800;font-family:ui-sans-serif,system-ui;letter-spacing:-.02em}
-.stat .l{color:var(--dim);font-size:12.5px;text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
-.abl{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0}
-@media(max-width:640px){.abl{grid-template-columns:1fr}}
-.abl .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
-.abl h3{font-family:ui-sans-serif,system-ui;font-size:15px;margin-bottom:8px}
-.abl code{font-size:12.5px;color:var(--dim)}
-.foot{margin-top:80px;border-top:1px solid var(--line);padding-top:20px;color:var(--dim);font-size:13px;font-family:ui-sans-serif,system-ui}
-a{color:var(--accent)}
+:root{--w:#ffffff;--dim:#9aa0a6;--faint:#4a4f55;--line:#26282b;--red:#ff3b30;--grn:#30d158}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#000;color:var(--w);font-family:"Barlow",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+/* ---------- nav ---------- */
+nav{position:fixed;inset:0 0 auto 0;z-index:10;display:flex;align-items:center;justify-content:space-between;
+padding:26px 42px;background:linear-gradient(#000c,#0000)}
+.logo{font-weight:700;font-size:19px;letter-spacing:.42em;text-transform:uppercase}
+.navlinks{display:flex;gap:34px}
+.navlinks a{font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--w);
+padding-bottom:3px;border-bottom:1px solid transparent;transition:border-color .2s}
+.navlinks a:hover{border-color:var(--w)}
+@media(max-width:720px){.navlinks{gap:18px}.navlinks a{font-size:10px}}
+/* ---------- hero ---------- */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
+padding:0 42px 12vh;position:relative;overflow:hidden;
+background:
+ radial-gradient(1100px 500px at 78% 12%, #1c2733 0%, transparent 60%),
+ radial-gradient(700px 380px at 15% 85%, #10151b 0%, transparent 65%),
+ #000}
+.hero:before{content:"";position:absolute;inset:0;background-image:
+ radial-gradient(1.2px 1.2px at 12% 22%, #ffffff88 0, transparent 100%),
+ radial-gradient(1px 1px at 31% 8%, #ffffff55 0, transparent 100%),
+ radial-gradient(1.4px 1.4px at 48% 31%, #ffffff77 0, transparent 100%),
+ radial-gradient(1px 1px at 63% 14%, #ffffff44 0, transparent 100%),
+ radial-gradient(1.1px 1.1px at 72% 41%, #ffffff66 0, transparent 100%),
+ radial-gradient(1px 1px at 87% 25%, #ffffff55 0, transparent 100%),
+ radial-gradient(1.3px 1.3px at 92% 9%, #ffffff88 0, transparent 100%),
+ radial-gradient(1px 1px at 55% 6%, #ffffff44 0, transparent 100%),
+ radial-gradient(1.1px 1.1px at 24% 44%, #ffffff33 0, transparent 100%),
+ radial-gradient(1px 1px at 40% 17%, #ffffff66 0, transparent 100%)}
+.mission{font-family:"Barlow Condensed";font-size:15px;font-weight:600;letter-spacing:.34em;
+text-transform:uppercase;color:var(--dim);margin-bottom:14px}
+h1{font-size:clamp(52px,9vw,124px);font-weight:700;letter-spacing:.01em;line-height:.96;
+text-transform:uppercase;max-width:11em}
+.sub{margin-top:22px;font-size:clamp(15px,1.6vw,19px);font-weight:400;color:var(--dim);max-width:44em;line-height:1.6}
+.sub b{color:var(--w);font-weight:600}
+.ctas{display:flex;gap:16px;margin-top:38px;flex-wrap:wrap}
+.btn{display:inline-block;border:2px solid var(--w);padding:15px 34px;font-size:13px;font-weight:600;
+letter-spacing:.24em;text-transform:uppercase;transition:background .2s,color .2s}
+.btn:hover{background:var(--w);color:#000}
+.btn.solid{background:var(--w);color:#000}
+.btn.solid:hover{background:transparent;color:var(--w)}
+/* ---------- stats band ---------- */
+.band{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));border-top:1px solid var(--line);
+border-bottom:1px solid var(--line)}
+.band .cell{padding:44px 20px;text-align:center;border-right:1px solid var(--line)}
+.band .cell:last-child{border-right:0}
+.band .n{font-size:clamp(40px,5vw,64px);font-weight:700;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.band .l{font-family:"Barlow Condensed";font-size:13px;font-weight:600;letter-spacing:.3em;
+text-transform:uppercase;color:var(--dim);margin-top:8px}
+/* ---------- sections ---------- */
+section{padding:14vh 42px;max-width:1180px;margin:0 auto}
+.kick{font-family:"Barlow Condensed";font-size:14px;font-weight:600;letter-spacing:.34em;
+text-transform:uppercase;color:var(--dim);margin-bottom:16px}
+h2{font-size:clamp(34px,4.6vw,60px);font-weight:700;text-transform:uppercase;letter-spacing:.005em;
+line-height:1.02;max-width:15em}
+.body{margin-top:26px;font-size:17px;line-height:1.75;color:var(--dim);max-width:46em}
+.body b{color:var(--w);font-weight:600}
+.body p+p{margin-top:16px}
+blockquote{border-left:2px solid var(--w);padding:4px 0 4px 26px;margin:34px 0;
+font-size:clamp(19px,2.3vw,26px);font-weight:500;line-height:1.45;color:var(--w);max-width:32em}
+blockquote cite{display:block;margin-top:12px;font-style:normal;font-size:13px;font-weight:600;
+letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+/* ---------- terminal ---------- */
+.shot{margin-top:44px;border:1px solid var(--line);background:#050607}
+.shot .cap{display:flex;justify-content:space-between;align-items:center;
+padding:13px 20px;border-bottom:1px solid var(--line)}
+.shot .cap span{font-family:"Barlow Condensed";font-size:12px;font-weight:600;
+letter-spacing:.28em;text-transform:uppercase;color:var(--dim)}
+.shot pre{padding:26px 28px;font-family:"IBM Plex Mono",Menlo,monospace;font-size:13.5px;
+line-height:1.75;overflow-x:auto;color:#cfd4da}
+.r{color:var(--red);font-weight:600}.g{color:var(--grn)}.d{color:var(--faint)}
+/* ---------- two-up ---------- */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);
+border:1px solid var(--line);margin-top:44px}
+@media(max-width:760px){.duo{grid-template-columns:1fr}}
+.duo .half{background:#050607;padding:34px 30px}
+.duo h3{font-family:"Barlow Condensed";font-size:15px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px}
+.duo code{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--dim);line-height:1.7;display:block;white-space:pre-wrap}
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);padding:44px 42px;display:flex;justify-content:space-between;
+flex-wrap:wrap;gap:18px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+footer a{color:var(--dim)}footer a:hover{color:var(--w)}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="tag">Precedent · The Fast Hackathon · Greptile × YC · Aug 23 2026</div>
-  <h1>Your team said it once.<br>The agent hears it every time.</h1>
-  <p class="sub">Past code-review rulings become a write-time gate for coding agents. Codex is blocked from re-writing the code your team already rejected — with the original PR cited in the denial, in under 14 milliseconds.</p>
-  <a class="cta" href="https://github.com/vnmoorthy/precedent">GitHub →</a>
-  <a class="cta ghost" href="slides.html">The 10 slides →</a>
 
-  <div class="term">
-    <div class="bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-    <pre><span class="dim">$ codex exec "Create src/webhooks/doordash.ts …"</span>
-
-<span class="dim">apply_patch  src/webhooks/doordash.ts</span>
-<span class="deny">DENIED</span> — Precedent: ruling #1 — "Verify the webhook signature with the
-provider SDK before parsing the body."
-<span class="dim">First raised by @you in PR #388 on 2026-07-14. Raised 4 times.
-Your patch adds `JSON.parse(body)` with no constructEvent call.  · 2.9ms</span>
-
-<span class="dim">codex: understood — rewriting with signature verification…</span>
-<span class="ok">✓ apply_patch allowed</span> — verifyWebhookSignature + deduped external_delivery_id
-<span class="ok">✓ bun test — 2 pass</span></pre>
+<nav>
+  <a class="logo" href="#">Precedent</a>
+  <div class="navlinks">
+    <a href="demo.html">Demo</a>
+    <a href="https://github.com/vnmoorthy/precedent">Product</a>
+    <a href="slides.html">Deck</a>
+    <a href="#proof">Proof</a>
   </div>
+</nav>
 
-  <h2>The bottleneck moved</h2>
-  <p>Agents write most of the code now. AI-generated PRs wait <b>~5× longer</b> for review, and the senior engineer who owns payments writes the <b>same review comment eleven times</b> — because every fresh agent session starts with amnesia. Rules files are suggestions the model drops under context pressure. Review bots catch it <b>after</b> the PR exists, on the reviewer's clock. Precedent enforces it <b>before the write happens</b>, on the agent's clock.</p>
-
-  <div class="grid">
-    <div class="stat"><div class="n">&lt;14ms</div><div class="l">gate decision</div></div>
-    <div class="stat"><div class="n">15</div><div class="l">real denials logged</div></div>
-    <div class="stat"><div class="n">17/17</div><div class="l">tests passing</div></div>
-    <div class="stat"><div class="n">0→9</div><div class="l">denials after decoy-hardening</div></div>
+<header class="hero">
+  <div style="position:relative">
+    <div class="mission">Review rulings · Enforced at write time</div>
+    <h1>Say it once.<br>It holds forever.</h1>
+    <p class="sub">Coding agents rewrite the mistakes your team already rejected — the senior who owns
+    payments writes the same review comment <b>eleven times</b>. Precedent turns past review rulings
+    into a write-time gate: the violating patch is <b>denied in milliseconds</b>, the original PR is
+    cited, and the agent corrects itself.</p>
+    <div class="ctas">
+      <a class="btn solid" href="demo.html">Launch demo</a>
+      <a class="btn" href="https://github.com/vnmoorthy/precedent">View product</a>
+    </div>
   </div>
+</header>
 
-  <h2>The proof: delete the memory, the bug comes back</h2>
-  <p>The demo carries its own falsification test — same task, same repo, same model. The only variable is the ruling in memory.</p>
-  <div class="abl">
-    <div class="card"><h3 style="color:var(--allow)">Memory ON</h3><code>✓ compliant — verified signature, deduped delivery id</code></div>
-    <div class="card"><h3 style="color:var(--deny)">Memory OFF</h3><code>✗ violates — JSON.parse(req.body), no signature check</code></div>
-  </div>
-  <p><b>The ruling is doing the work, not the model.</b></p>
-
-  <h2>Codex fought back</h2>
-  <p>Our first ruleset produced zero denials — Codex evaded it twice, once by renaming a parameter, once by <b>defining a decoy function named <code>constructEvent</code></b> that satisfied the letter of the rule while parsing unverified input. Rulings are now decoy-resistant: they demand a qualified call, never a bare identifier. If you needed proof that suggestions aren't enforcement, the agent gaming its own guardrail is it.</p>
-
-  <h2>How it works</h2>
-  <p>A 6-line bash hook bridges Codex's <code>PreToolUse</code> event to a local daemon. The daemon parses the patch, matches path-scoped rulings from SQLite (hot path) backed by <a href="https://github.com/thedotmack/claude-mem">claude-mem</a> (durable, typed, cloud-syncable memory), and returns a deny with provenance — or silence. It <b>fails open</b>: a dead daemon never blocks the agent. Rulings are mined from Greptile review comments and GitHub PR threads: the objections your team already made, made binding.</p>
-
-  <div class="foot">Built in 4 hours with OpenAI Codex as the primary coding agent · Greptile × Y Combinator Fast Hackathon · memory by claude-mem · <a href="https://github.com/vnmoorthy/precedent">github.com/vnmoorthy/precedent</a></div>
+<div class="band">
+  <div class="cell"><div class="n">17</div><div class="l">Denials logged</div></div>
+  <div class="cell"><div class="n">0.1<span style="font-size:.5em">ms</span></div><div class="l">Fastest gate decision</div></div>
+  <div class="cell"><div class="n">17/17</div><div class="l">Tests passing</div></div>
+  <div class="cell"><div class="n">2</div><div class="l">Rulings in memory</div></div>
 </div>
+
+<section>
+  <div class="kick">01 · The problem</div>
+  <h2>Generation is instant. Review is not.</h2>
+  <div class="body">
+    <p>Agents now produce most of the code. AI-generated pull requests wait roughly five times longer
+    for a first review, and the burden lands on the one person who cannot refuse it — the code owner.</p>
+    <blockquote>"For the cost of hundreds of CPU hours but only 2 or 3 minutes of their time,
+    I'm now expected to review this."<cite>r/ExperiencedDevs · 1.9K upvotes · 438 comments</cite></blockquote>
+    <p>Rules files don't hold — a <b>CLAUDE.md is a suggestion the model drops under context
+    pressure</b>. Review bots catch the bug after the PR exists, on the reviewer's clock. Nothing
+    makes the team's past decisions binding at the moment that matters: <b>the write</b>.</p>
+  </div>
+</section>
+
+<section>
+  <div class="kick">02 · The system</div>
+  <h2>Mine. Remember. Enforce.</h2>
+  <div class="body">
+    <p>Recurring review objections are distilled into typed <b>rulings</b> — the rule, its path scope,
+    the PR where it was first made, its recurrence count. Rulings persist in
+    <b>claude-mem</b> as first-class memory, synced across machines. A six-line hook bridges the
+    agent's pre-write event to a local daemon that parses the patch, matches path-scoped rulings,
+    and answers in under fourteen milliseconds. It fails open — a dead daemon never blocks the agent.</p>
+  </div>
+  <div class="shot">
+    <div class="cap"><span>Captured session · 2026-08-23 · 16:10 PT</span><span>codex-cli 0.146</span></div>
+    <pre><span class="d">$ codex exec "Create src/webhooks/doordash.ts …"</span>
+
+<span class="d">apply_patch  src/webhooks/doordash.ts</span>
+<span class="r">DENIED</span> — Precedent: ruling #1 — "Verify the webhook signature before
+parsing the body."
+<span class="d">First raised by @you in PR #388 on 2026-07-14. Raised 4 times.
+Your patch adds `const event = JSON.parse(req.body)` at
+src/webhooks/doordash.ts:1 with no constructEvent call.  ·  1.1 ms</span>
+
+<span class="d">codex — rewriting with signature verification…</span>
+<span class="g">ALLOWED</span> — verifyWebhookSignature · deduped on external_delivery_id
+<span class="g">✓ bun test — 2 pass</span></pre>
+  </div>
+</section>
+
+<section id="proof">
+  <div class="kick">03 · Flight proof</div>
+  <h2>Delete the memory. The bug returns.</h2>
+  <div class="body">
+    <p>The system carries its own falsification test. Identical task, identical repo, identical model —
+    the only variable is whether the ruling exists in memory. Machine-classified, not eyeballed.</p>
+  </div>
+  <div class="duo">
+    <div class="half">
+      <h3 style="color:var(--grn)">Memory on</h3>
+      <code>✓ compliant
+verifyWebhookSignature(req.headers)
+!alreadyProcessed(external_delivery_id)</code>
+    </div>
+    <div class="half">
+      <h3 style="color:var(--red)">Memory off</h3>
+      <code>✗ violates
+const event = JSON.parse(req.body)
+// no signature check</code>
+    </div>
+  </div>
+  <div class="body"><p><b>The ruling is doing the work, not the model.</b></p></div>
+</section>
+
+<section>
+  <div class="kick">04 · Anomaly report</div>
+  <h2>The agent fought the gate. Twice.</h2>
+  <div class="body">
+    <p>The first ruleset produced <b>zero denials</b>. Codex routed around it — once by passing
+    <b>req.body</b> through a parameter rename, and once by <b>defining a decoy function named
+    constructEvent</b> that satisfied the rule's letter while parsing unverified input. Rulings are
+    now decoy-resistant: they demand a qualified call, never a bare identifier. Same task,
+    after hardening: <b>zero to nine denials</b>. If suggestions were enforcement, the agent
+    wouldn't have needed to cheat.</p>
+  </div>
+</section>
+
+<section>
+  <div class="kick">05 · Fly it</div>
+  <h2>One repo. One hook.</h2>
+  <div class="body">
+    <p>Copy the hook into any repo you want governed, start the daemon, and the team's precedent
+    holds for every agent session that touches it.</p>
+  </div>
+  <div class="shot"><div class="cap"><span>Install</span></div>
+  <pre><span class="d">$</span> git clone https://github.com/vnmoorthy/precedent && cd precedent
+<span class="d">$</span> bun install && bun test        <span class="d"># 17 pass</span>
+<span class="d">$</span> bun run src/daemon.ts &        <span class="d"># gate + board on :4747</span>
+<span class="d">$</span> cp -r fixtures/repo/.codex your-repo/.codex</pre></div>
+  <div class="ctas" style="margin-top:40px">
+    <a class="btn solid" href="demo.html">Launch demo</a>
+    <a class="btn" href="https://github.com/vnmoorthy/precedent">GitHub</a>
+    <a class="btn" href="slides.html">Deck</a>
+  </div>
+</section>
+
+<footer>
+  <div>Precedent — built with Codex · The Fast Hackathon · Greptile × Y Combinator · Aug 23 2026</div>
+  <div><a href="https://github.com/vnmoorthy/precedent">github.com/vnmoorthy/precedent</a></div>
+</footer>
+
 </body>
 </html>

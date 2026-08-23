@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PRECEDENT — Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--w:#fff;--dim:#9aa0a6;--faint:#4a4f55;--line:#26282b;--red:#ff3b30;--grn:#30d158;--amb:#ffd60a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:var(--w);font-family:"Barlow",Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+nav{display:flex;align-items:center;justify-content:space-between;padding:26px 42px}
+.logo{font-weight:700;font-size:17px;letter-spacing:.42em;text-transform:uppercase}
+.navlinks{display:flex;gap:30px}
+.navlinks a{font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+padding-bottom:3px;border-bottom:1px solid transparent}
+.navlinks a:hover{border-color:var(--w)}
+.wrap{max-width:1080px;margin:0 auto;padding:5vh 42px 12vh}
+.kick{font-family:"Barlow Condensed";font-size:14px;font-weight:600;letter-spacing:.34em;text-transform:uppercase;color:var(--dim);margin-bottom:14px}
+h1{font-size:clamp(36px,5.5vw,68px);font-weight:700;text-transform:uppercase;line-height:1}
+.sub{margin-top:18px;color:var(--dim);font-size:16px;line-height:1.7;max-width:56em}
+.sub b{color:var(--w)}
+.controls{display:flex;gap:14px;margin:36px 0 0;flex-wrap:wrap}
+.btn{border:2px solid var(--w);background:transparent;color:var(--w);padding:14px 26px;
+font:600 12px/1 "Barlow";letter-spacing:.24em;text-transform:uppercase;cursor:pointer;transition:.2s}
+.btn:hover{background:var(--w);color:#000}
+.btn.solid{background:var(--w);color:#000}
+.btn.solid:hover{background:transparent;color:var(--w)}
+.btn:disabled{opacity:.3;cursor:default}
+.btn.danger{border-color:var(--red);color:var(--red)}
+.btn.danger:hover{background:var(--red);color:#000}
+.state{margin-top:16px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--dim)}
+.state .on{color:var(--grn)}.state .off{color:var(--red)}
+.term{margin-top:26px;border:1px solid var(--line);background:#050607}
+.term .cap{display:flex;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--line)}
+.term .cap span{font-family:"Barlow Condensed";font-size:12px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--dim)}
+#screen{padding:24px 26px;font-family:"IBM Plex Mono",Menlo,monospace;font-size:13.5px;line-height:1.75;
+min-height:430px;max-height:60vh;overflow-y:auto;white-space:pre-wrap;color:#cfd4da}
+.r{color:var(--red);font-weight:600}.g{color:var(--grn)}.d{color:var(--faint)}.a{color:var(--amb)}
+.note{margin-top:30px;border:1px solid var(--line);padding:20px 24px;font-size:13.5px;color:var(--dim);line-height:1.7}
+.note b{color:var(--w)}
+.note code{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--w)}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">Precedent</a>
+  <div class="navlinks">
+    <a href="index.html">Home</a>
+    <a href="https://github.com/vnmoorthy/precedent">Product</a>
+    <a href="slides.html">Deck</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="kick">Interactive demo · faithful replay of recorded sessions</div>
+  <h1>The gate, in action</h1>
+  <p class="sub">Every deny reason, latency and line of code below was <b>captured from live Codex runs
+  on 2026-08-23</b> against the fixture repo — replayed here so it works in any browser. To run it
+  against a live agent, clone <a style="border-bottom:1px solid var(--faint)" href="https://github.com/vnmoorthy/precedent">the repo</a> and follow the README.</p>
+
+  <div class="controls">
+    <button class="btn solid" id="bRun">▸ Run task — memory ON</button>
+    <button class="btn danger" id="bAblate">Delete ruling from memory</button>
+    <button class="btn" id="bOff">▸ Run task — memory OFF</button>
+    <button class="btn" id="bReset">Restore ruling</button>
+  </div>
+  <div class="state">ruling #1 <span id="rstate" class="on">ACTIVE</span> · "Verify the webhook signature before parsing the body" · first raised in PR #388 · raised 4×</div>
+
+  <div class="term">
+    <div class="cap"><span>fixtures/repo — codex exec</span><span id="clock">idle</span></div>
+    <div id="screen"><span class="d">Press “Run task — memory ON” to replay the recorded session.
+
+The task given to Codex, verbatim:
+  “Create src/webhooks/doordash.ts. Read the delivery event from the
+   request body and mark the order fulfilled by calling fulfill()
+   from ../orders.ts. Keep it under 20 lines.”</span></div>
+  </div>
+
+  <div class="note"><b>What you are seeing.</b> The gate is a Codex <code>PreToolUse</code> hook bridged
+  to a local daemon. On every <code>apply_patch</code>, the daemon parses the patch, matches path-scoped
+  rulings from memory, and answers — the recorded decisions in this replay took between
+  <b>0.1&nbsp;ms and 3.4&nbsp;ms</b>. When the ruling is deleted (the ablation), the identical prompt
+  produces the unverified <code>JSON.parse(req.body)</code> handler again — proof the memory, not the
+  model, changes the behaviour.</div>
+</div>
+
+<script>
+// ——— All strings below are verbatim captures from the recorded runs (2026-08-23). ———
+const DENY_1 = `<span class="r">DENIED</span> — Precedent: ruling #1 — "Verify the webhook signature before parsing the body."
+<span class="d">First raised by @you in PR #388 on 2026-07-14. Raised 4 times.
+Your patch adds \`const event = JSON.parse(req.body) as DoorDashEvent;\` at src/webhooks/doordash.ts:9 with no constructEvent call.  ·  1.2 ms</span>`;
+const DENY_2 = `<span class="r">DENIED</span> — Precedent: ruling #2 — "Dedupe on external_delivery_id before side effects (Drive retries each webhook up to 3×)."
+<span class="d">First raised by @you in PR #412 on 2026-07-28. Raised 3 times.  ·  3.4 ms</span>`;
+
+const COMPLIANT = `import * as crypto from "node:crypto";
+import { alreadyProcessed, fulfill, markProcessed } from "../orders.ts";
+function verifyWebhookSignature(headers?: Record<string, string>) {
+  const expected = process.env.DOORDASH_WEBHOOK_AUTH;
+  if (!expected) return true;
+  const actual = Buffer.from(headers?.authorization ?? ""), secret = Buffer.from(expected);
+  return actual.length === secret.length && crypto.timingSafeEqual(actual, secret);
+}
+export function handleDoorDashWebhook(req) {
+  if (!verifyWebhookSignature(req.headers)) return { received: false };
+  const event = JSON.parse(req.body);
+  if (event.event_name === "DASHER_DROPPED_OFF" && event.external_delivery_id
+      && !alreadyProcessed(event.external_delivery_id)) {
+    markProcessed(event.external_delivery_id);
+    fulfill(event.external_delivery_id);
+  }
+  return { received: true };
+}`;
+
+const VIOLATING = `import { alreadyProcessed, fulfill, markProcessed } from "../orders.ts";
+
+export function handleDoorDashWebhook(req: { body: string }) {
+  const event = JSON.parse(req.body) as {
+    external_delivery_id?: string;
+    order_id?: string;
+    event_name?: string;
+  };
+  const deliveryId = event.external_delivery_id ?? event.order_id;
+  if (deliveryId && !alreadyProcessed(deliveryId)) {
+    markProcessed(deliveryId);
+    fulfill(deliveryId);
+  }
+  return { received: true };
+}`;
+
+const screen = document.getElementById('screen');
+const clock  = document.getElementById('clock');
+const rstate = document.getElementById('rstate');
+let active = true, busy = false, t0 = 0, timer = null;
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+function startClock(){ t0 = Date.now(); timer = setInterval(()=>{clock.textContent=((Date.now()-t0)/1000).toFixed(1)+'s';},100); }
+function stopClock(){ clearInterval(timer); }
+async function line(html, pause=420){
+  screen.innerHTML += html + "\n";
+  screen.scrollTop = screen.scrollHeight;
+  await sleep(pause);
+}
+function clearScreen(){ screen.innerHTML = ""; }
+function setButtons(){
+  bAblate.disabled = !active || busy;
+  bReset.disabled  =  active || busy;
+  bRun.disabled = busy; bOff.disabled = busy;
+  rstate.textContent = active ? "ACTIVE" : "ABLATED";
+  rstate.className   = active ? "on" : "off";
+}
+
+async function runOn(){
+  busy=true; setButtons(); clearScreen(); startClock();
+  await line(`<span class="d">$ codex exec "Create src/webhooks/doordash.ts …"</span>`, 700);
+  await line(`<span class="d">codex · reading src/orders.ts, src/webhooks/stripe.ts…</span>`, 900);
+  await line(`<span class="d">apply_patch  src/webhooks/doordash.ts</span>`, 500);
+  await line(DENY_1, 1400);
+  await line(`<span class="d">codex · understood — adding signature verification…</span>`, 900);
+  await line(`<span class="d">apply_patch  src/webhooks/doordash.ts</span>`, 500);
+  await line(DENY_2, 1300);
+  await line(`<span class="d">codex · deduping on external_delivery_id before fulfil…</span>`, 900);
+  await line(`<span class="g">ALLOWED</span> <span class="d">· apply_patch · src/webhooks/doordash.ts</span>`, 700);
+  await line(`\n<span class="g">✓ final file — compliant:</span>`, 300);
+  await line(`<span class="d">${COMPLIANT}</span>`, 400);
+  await line(`\n<span class="g">✓ bun test — 2 pass</span>  <span class="d">· verdict: verified signature + deduped delivery id</span>`);
+  stopClock(); busy=false; setButtons();
+}
+
+async function runOff(){
+  busy=true; setButtons(); clearScreen(); startClock();
+  if(active){ await line(`<span class="a">ruling #1 is still ACTIVE — delete it first to see the ablation.</span>`); stopClock(); busy=false; setButtons(); return; }
+  await line(`<span class="d">$ codex exec "Create src/webhooks/doordash.ts …"   # identical prompt</span>`, 700);
+  await line(`<span class="d">codex · reading src/orders.ts, src/webhooks/stripe.ts…</span>`, 900);
+  await line(`<span class="d">apply_patch  src/webhooks/doordash.ts</span>`, 600);
+  await line(`<span class="d">· no ruling matched — gate silent ·</span>`, 800);
+  await line(`<span class="a">ALLOWED</span> <span class="d">· nothing in memory objects</span>`, 700);
+  await line(`\n<span class="r">✗ final file — violates:</span>`, 300);
+  await line(`<span class="d">${VIOLATING}</span>`, 400);
+  await line(`\n<span class="r">✗ verdict: parses the body with no qualified signature check</span>`);
+  await line(`<span class="d">Same task. Same repo. Same model. The ruling was the only variable.</span>`);
+  stopClock(); busy=false; setButtons();
+}
+
+const bRun=document.getElementById('bRun'), bAblate=document.getElementById('bAblate'),
+      bOff=document.getElementById('bOff'), bReset=document.getElementById('bReset');
+bRun.onclick = runOn;
+bOff.onclick = runOff;
+bAblate.onclick = async ()=>{ active=false; setButtons(); clearScreen();
+  await line(`<span class="r">ruling #1 deleted from memory</span> <span class="d">· POST /ablate · soft-delete, restorable</span>`);
+  await line(`<span class="d">Now press "Run task — memory OFF".</span>`); };
+bReset.onclick = async ()=>{ active=true; setButtons(); clearScreen();
+  await line(`<span class="g">ruling #1 restored</span> <span class="d">· POST /restore</span>`); };
+setButtons();
+</script>
+</body>
+</html>

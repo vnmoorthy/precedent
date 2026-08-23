@@ -3,162 +3,188 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Precedent Deck</title>
+<title>PRECEDENT — Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-:root{--bg:#0d0f12;--card:#151a20;--line:#242c35;--ink:#e9eef3;--dim:#8b98a6;
---deny:#ff5c47;--allow:#3ddc84;--accent:#ffb454}
-*{box-sizing:border-box;margin:0}
+:root{--w:#fff;--dim:#9aa0a6;--faint:#4a4f55;--line:#26282b;--red:#ff3b30;--grn:#30d158}
+*{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system;overflow:hidden}
-.slide{display:none;height:100vh;padding:7vh 8vw;flex-direction:column;justify-content:center}
+body{background:#000;color:var(--w);font-family:"Barlow",Helvetica,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased}
+.slide{display:none;height:100vh;padding:8vh 8vw;flex-direction:column;justify-content:center;position:relative}
 .slide.on{display:flex}
-.kicker{color:var(--accent);font-family:ui-monospace,Menlo,monospace;font-size:14px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px}
-h1{font-size:clamp(40px,6.5vw,84px);line-height:1.02;letter-spacing:-.03em;font-weight:800}
-h2{font-size:clamp(30px,4.5vw,54px);line-height:1.08;letter-spacing:-.02em;font-weight:800;margin-bottom:26px}
-p,li{font-size:clamp(17px,2vw,24px);line-height:1.55;color:var(--dim);max-width:34em}
-p b,li b,p strong{color:var(--ink)}
-ul{list-style:none;margin-top:6px}
-li{margin:12px 0;padding-left:26px;position:relative}
-li:before{content:"—";position:absolute;left:0;color:var(--accent)}
-.mono{font-family:ui-monospace,Menlo,monospace}
-.quote{border-left:3px solid var(--accent);padding-left:22px;font-size:clamp(19px,2.4vw,28px);color:var(--ink);font-style:italic;max-width:30em}
-.quote .src{display:block;font-style:normal;color:var(--dim);font-size:15px;margin-top:12px}
-.term{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 26px;font-family:ui-monospace,Menlo,monospace;font-size:clamp(13px,1.5vw,17px);line-height:1.7;margin-top:22px;max-width:44em;white-space:pre-wrap}
-.deny{color:var(--deny);font-weight:700}.ok{color:var(--allow)}.dm{color:var(--dim)}
-.big{font-size:clamp(56px,9vw,120px);font-weight:800;letter-spacing:-.03em}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:24px;max-width:52em}
-.col{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px}
-.col h3{font-size:19px;margin-bottom:10px}
-.col p{font-size:16px}
-.stats{display:flex;gap:44px;margin-top:30px;flex-wrap:wrap}
-.stat .n{font-size:clamp(38px,5vw,64px);font-weight:800;letter-spacing:-.02em}
-.stat .l{color:var(--dim);font-size:14px;text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
-.pgnum{position:fixed;bottom:22px;right:28px;color:var(--dim);font-family:ui-monospace,Menlo,monospace;font-size:13px}
-.hint{position:fixed;bottom:22px;left:28px;color:var(--dim);font-size:12px;font-family:ui-monospace,Menlo,monospace;opacity:.6}
+.kick{font-family:"Barlow Condensed";font-size:15px;font-weight:600;letter-spacing:.36em;text-transform:uppercase;color:var(--dim);margin-bottom:22px}
+h1{font-size:clamp(44px,7.5vw,110px);font-weight:700;line-height:.98;text-transform:uppercase;letter-spacing:.005em}
+h2{font-size:clamp(30px,4.6vw,58px);font-weight:700;line-height:1.02;text-transform:uppercase;margin-bottom:30px;max-width:14em}
+p,li{font-size:clamp(16px,1.9vw,22px);line-height:1.6;color:var(--dim);max-width:36em}
+p b,li b{color:var(--w);font-weight:600}
+ul{list-style:none;margin-top:4px}
+li{margin:14px 0;padding-left:30px;position:relative}
+li:before{content:"";position:absolute;left:0;top:.62em;width:16px;height:2px;background:var(--w)}
+.mono{font-family:"IBM Plex Mono",Menlo,monospace}
+blockquote{border-left:2px solid var(--w);padding-left:26px;font-size:clamp(19px,2.5vw,30px);font-weight:500;line-height:1.4;color:var(--w);max-width:28em}
+blockquote cite{display:block;margin-top:14px;font-style:normal;font-size:13px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}
+.term{border:1px solid var(--line);background:#050607;padding:24px 28px;font-family:"IBM Plex Mono",monospace;font-size:clamp(12px,1.5vw,16px);line-height:1.75;margin-top:8px;max-width:46em;white-space:pre-wrap;color:#cfd4da}
+.r{color:var(--red);font-weight:600}.g{color:var(--grn)}.d{color:var(--faint)}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);max-width:52em;margin-top:6px}
+.duo>div{background:#050607;padding:26px 28px}
+.duo h3{font-family:"Barlow Condensed";font-size:15px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;margin-bottom:12px}
+.duo code{font-family:"IBM Plex Mono",monospace;font-size:clamp(12px,1.3vw,15px);color:var(--dim);line-height:1.7;display:block;white-space:pre-wrap}
+.stats{display:flex;gap:0;margin-top:10px;flex-wrap:wrap;border:1px solid var(--line)}
+.stat{padding:30px 44px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat .n{font-size:clamp(36px,4.6vw,62px);font-weight:700;font-variant-numeric:tabular-nums}
+.stat .l{font-family:"Barlow Condensed";font-size:13px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);margin-top:6px}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:34px;max-width:56em;margin-top:6px}
+@media(max-width:820px){.rules{grid-template-columns:1fr}}
+.rules h3{font-family:"Barlow Condensed";font-size:15px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;margin-bottom:14px;color:var(--w)}
+.rules li{font-size:clamp(14px,1.5vw,18px);margin:10px 0}
+.ok:before{background:var(--grn)}
+.pg{position:fixed;bottom:26px;right:34px;color:var(--faint);font-family:"IBM Plex Mono",monospace;font-size:13px}
+.hint{position:fixed;bottom:26px;left:34px;color:var(--faint);font-size:11px;font-family:"IBM Plex Mono",monospace}
+.brand{position:fixed;top:26px;left:34px;font-weight:700;font-size:14px;letter-spacing:.42em;text-transform:uppercase;color:var(--faint)}
 </style>
 </head>
 <body>
+<div class="brand">Precedent</div>
 
 <!-- 1 -->
 <section class="slide on">
-  <div class="kicker">Precedent · The Fast Hackathon · Greptile × YC</div>
-  <h1>Your team said it once.<br>The agent hears it<br>every time.</h1>
-  <p style="margin-top:22px">Review rulings, enforced at the moment the agent writes.</p>
+  <div class="kick">The Fast Hackathon · Greptile × Y Combinator · 08.23.2026</div>
+  <h1>Say it once.<br>It holds forever.</h1>
+  <p style="margin-top:26px">Code-review rulings, enforced at the moment the agent writes.</p>
 </section>
 
 <!-- 2 -->
 <section class="slide">
-  <div class="kicker">The problem</div>
-  <div class="quote">"For the cost of hundreds of CPU hours but only 2 or 3 minutes of their time, I'm now expected to review this."
-    <span class="src">r/ExperiencedDevs · 1.9K upvotes · 438 comments</span></div>
-  <ul style="margin-top:30px">
+  <div class="kick">01 · The problem</div>
+  <blockquote>"For the cost of hundreds of CPU hours but only 2 or 3 minutes of their time, I'm now expected to review this."
+  <cite>r/ExperiencedDevs · 1.9K upvotes · 438 comments</cite></blockquote>
+  <ul style="margin-top:36px">
     <li>AI-generated PRs wait <b>~5× longer</b> for first review</li>
-    <li>The senior who owns payments writes the <b>same comment eleven times</b></li>
-    <li>Every fresh agent session starts with <b>amnesia</b></li>
+    <li>The code owner writes the <b>same objection eleven times</b></li>
+    <li>Every fresh agent session starts from <b>zero</b></li>
   </ul>
 </section>
 
 <!-- 3 -->
 <section class="slide">
-  <div class="kicker">Why nothing fixes it</div>
-  <h2>Suggestions aren't enforcement</h2>
+  <div class="kick">02 · Why nothing holds</div>
+  <h2>Suggestions are not enforcement</h2>
   <ul>
-    <li><b>AGENTS.md / rules files</b> — dropped under context pressure; the model treats them as vibes</li>
-    <li><b>Review bots</b> (Greptile, CodeRabbit) — catch it <b>after</b> the PR exists, on the reviewer's clock</li>
-    <li><b>Nobody</b> makes the team's past rulings <b>binding at write time</b></li>
+    <li><b>Rules files</b> — dropped under context pressure; the model treats them as advice</li>
+    <li><b>Review bots</b> — catch it after the PR exists, on the reviewer's clock</li>
+    <li>Nobody makes the team's past decisions <b>binding at write time</b></li>
   </ul>
 </section>
 
 <!-- 4 -->
 <section class="slide">
-  <div class="kicker">Precedent</div>
-  <h2>Mine → Remember → Enforce</h2>
+  <div class="kick">03 · The system</div>
+  <h2>Mine · Remember · Enforce</h2>
   <ul>
-    <li><b>Mine</b> recurring objections from Greptile reviews + GitHub PR threads into typed <b>rulings</b></li>
-    <li><b>Remember</b> them in claude-mem — persistent, typed, synced across machines</li>
-    <li><b>Enforce</b> via a Codex PreToolUse hook: violating patches are <b class="mono" style="color:var(--deny)">DENIED in &lt;14ms</b>, with the original PR cited</li>
-    <li>The agent reads the denial and <b>self-corrects</b> — no human in the loop</li>
+    <li><b>Mine</b> recurring review objections into typed rulings — rule, path scope, origin PR, recurrence</li>
+    <li><b>Remember</b> them in claude-mem — typed, persistent, synced across machines</li>
+    <li><b>Enforce</b> pre-write: violating patches <b style="color:var(--red)">denied</b> with the original PR cited, in milliseconds</li>
+    <li>The agent reads the denial and <b>corrects itself</b></li>
   </ul>
 </section>
 
 <!-- 5 -->
 <section class="slide">
-  <div class="kicker">Live</div>
-  <h2>The deny</h2>
-  <div class="term"><span class="dm">$ codex exec "Create src/webhooks/doordash.ts …"</span>
+  <div class="kick">04 · Captured live · 16:10 today</div>
+  <div class="term"><span class="d">$ codex exec "Create src/webhooks/doordash.ts …"</span>
 
-<span class="deny">DENIED</span> — ruling #1: "Verify the webhook signature before parsing the body."
-<span class="dm">First raised by @you in PR #388 · raised 4× · 2.9ms</span>
+<span class="r">DENIED</span> — ruling #1: "Verify the webhook signature before parsing the body."
+<span class="d">First raised by @you in PR #388 · raised 4× · 1.1 ms</span>
 
-<span class="dm">codex: rewriting with signature verification…</span>
-<span class="ok">✓ allowed</span> — verifyWebhookSignature + deduped external_delivery_id</div>
+<span class="d">codex — rewriting with signature verification…</span>
+<span class="g">ALLOWED</span> — verifyWebhookSignature · deduped external_delivery_id
+<span class="g">✓ bun test — pass</span></div>
 </section>
 
 <!-- 6 -->
 <section class="slide">
-  <div class="kicker">The proof</div>
-  <h2>Delete the memory.<br>The bug comes back.</h2>
-  <div class="cols">
-    <div class="col"><h3 style="color:var(--allow)">Memory ON</h3><p class="mono">✓ compliant — verified signature, deduped delivery id</p></div>
-    <div class="col"><h3 style="color:var(--deny)">Memory OFF</h3><p class="mono">✗ violates — JSON.parse(req.body), no signature check</p></div>
+  <div class="kick">05 · Flight proof</div>
+  <h2>Delete the memory.<br>The bug returns.</h2>
+  <div class="duo">
+    <div><h3 style="color:var(--grn)">Memory on</h3><code>✓ compliant
+verified signature · deduped delivery id</code></div>
+    <div><h3 style="color:var(--red)">Memory off</h3><code>✗ violates
+JSON.parse(req.body) · no signature check</code></div>
   </div>
-  <p style="margin-top:26px"><b>Same task, same repo, same model.</b> The ruling is doing the work — machine-checked, not claimed.</p>
+  <p style="margin-top:26px">Identical task, repo and model. <b>The ruling is the only variable.</b> Machine-classified.</p>
 </section>
 
 <!-- 7 -->
 <section class="slide">
-  <div class="kicker">The twist</div>
-  <h2>Codex fought back</h2>
+  <div class="kick">06 · Anomaly report</div>
+  <h2>The agent fought the gate</h2>
   <ul>
-    <li>Ruleset v1 produced <b>zero denials</b> — the agent evaded it twice</li>
-    <li>Renamed a parameter to dodge the forbid pattern</li>
-    <li>Defined a <b>decoy function named <span class="mono">constructEvent</span></b> to satisfy the require check while still parsing unverified input</li>
-    <li>Rulings are now <b>decoy-resistant</b> — qualified calls only. Same task: <b>0 → 9 denials</b></li>
+    <li>Ruleset v1: <b>zero denials</b> — Codex evaded it twice</li>
+    <li>Dodged the pattern via a <b>parameter rename</b></li>
+    <li>Defined a <b>decoy function named <span class="mono">constructEvent</span></b> — letter of the rule, not the point</li>
+    <li>Hardened to qualified-call rulings → same task, <b>0 → 9 denials</b></li>
   </ul>
 </section>
 
 <!-- 8 -->
 <section class="slide">
-  <div class="kicker">Verified today</div>
+  <div class="kick">07 · Telemetry · all verified today</div>
   <div class="stats">
-    <div class="stat"><div class="n" style="color:var(--allow)">17/17</div><div class="l">tests passing</div></div>
-    <div class="stat"><div class="n">&lt;14ms</div><div class="l">gate decision</div></div>
-    <div class="stat"><div class="n" style="color:var(--deny)">15</div><div class="l">real denials logged</div></div>
-    <div class="stat"><div class="n" style="color:var(--accent)">2</div><div class="l">rulings in claude-mem</div></div>
+    <div class="stat"><div class="n" style="color:var(--red)">17</div><div class="l">denials logged</div></div>
+    <div class="stat"><div class="n">0.1<span style="font-size:.45em">ms</span></div><div class="l">fastest decision</div></div>
+    <div class="stat"><div class="n" style="color:var(--grn)">17/17</div><div class="l">tests passing</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">rulings in memory</div></div>
   </div>
-  <p style="margin-top:34px">Codex wrote the engine — parser, matcher, store, daemon. ~1,100 lines across 50+ sessions, rollouts on file. Stripe webhook verification and DoorDash Drive's 3× redelivery are the seeded rulings — real invariants from their docs.</p>
+  <p style="margin-top:32px">Fails open — a dead daemon never blocks the agent. SQLite on the hot path, claude-mem as durable memory.</p>
 </section>
 
 <!-- 9 -->
 <section class="slide">
-  <div class="kicker">The company</div>
-  <h2>The author-side half of code review</h2>
-  <ul>
-    <li><b>Buyer:</b> the CODEOWNER auto-requested on every agent PR touching payments/auth</li>
-    <li><b>Wedge:</b> one repo, one hook — <span class="mono">npx precedent init</span></li>
-    <li><b>Moat:</b> the team's accumulated rulings — memory that compounds and travels across agents</li>
-    <li><b>Framing:</b> not restraining agents — making them trustworthy enough for <b>more</b> autonomy</li>
-  </ul>
+  <div class="kick">08 · Rules & sponsors</div>
+  <div class="rules">
+    <div>
+      <h3>Hackathon rules</h3>
+      <ul>
+        <li class="ok"><b>Codex as primary agent</b> — wrote the engine (~1,100 lines: parser, matcher, store, daemon) across 50+ sessions; rollouts on file</li>
+        <li class="ok">Built during the 1–5pm window; prep limited to accounts, fixtures and keys</li>
+        <li class="ok">Supporting tools disclosed — Claude Code assisted on fixtures, docs and ruling curation</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Sponsor stack</h3>
+      <ul>
+        <li class="ok"><b>OpenAI Codex</b> — builder and the governed agent</li>
+        <li class="ok"><b>Greptile</b> — review history is the ruling source; enabled on the repo</li>
+        <li class="ok"><b>claude-mem</b> — rulings live as typed memory (Memory Prize entry)</li>
+        <li class="ok"><b>Stripe</b> — ruling #1 encodes real webhook-signature semantics</li>
+        <li class="ok"><b>DoorDash</b> — ruling #2 encodes Drive's documented 3× redelivery</li>
+        <li>AWS & Modal — not used in the 4-hour build; scale path</li>
+      </ul>
+    </div>
+  </div>
 </section>
 
 <!-- 10 -->
 <section class="slide">
-  <div class="kicker">Precedent</div>
-  <h1>Say it once.</h1>
-  <p style="margin-top:22px" class="mono">github.com/vnmoorthy/precedent</p>
-  <p class="mono" style="margin-top:6px">built with Codex · rulings from Greptile · memory by claude-mem</p>
+  <div class="kick">09 · The company</div>
+  <h2>The author-side half of code review</h2>
+  <ul>
+    <li><b>Buyer</b> — the code owner auto-requested on every agent PR touching payments and auth</li>
+    <li><b>Wedge</b> — one repo, one hook: <span class="mono">npx precedent init</span></li>
+    <li><b>Moat</b> — rulings that compound; team memory that travels across agents</li>
+    <li><b>Framing</b> — agents trustworthy enough for <b>more</b> autonomy, not less</li>
+  </ul>
+  <p class="mono" style="margin-top:34px;font-size:15px">github.com/vnmoorthy/precedent · vnmoorthy.github.io/precedent</p>
 </section>
 
-<div class="pgnum"><span id="pg">1</span> / 10</div>
-<div class="hint">← → or space</div>
+<div class="pg"><span id="pg">1</span> / 10</div>
+<div class="hint">← → · space · click</div>
 <script>
-const slides=[...document.querySelectorAll('.slide')];let i=0;
-function go(n){i=Math.max(0,Math.min(slides.length-1,n));
-slides.forEach((s,k)=>s.classList.toggle('on',k===i));
-document.getElementById('pg').textContent=i+1;}
-addEventListener('keydown',e=>{
-if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();go(i+1)}
-if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(i-1)}});
+const s=[...document.querySelectorAll('.slide')];let i=0;
+const go=n=>{i=Math.max(0,Math.min(s.length-1,n));s.forEach((x,k)=>x.classList.toggle('on',k===i));document.getElementById('pg').textContent=i+1};
+addEventListener('keydown',e=>{if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();go(i+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(i-1)}});
 addEventListener('click',()=>go(i+1));
 </script>
 </body>

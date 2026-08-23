@@ -130,7 +130,7 @@ The CODEOWNER who owns payments/auth is auto-requested on every agent PR and wri
 
 ## Built at The Fast Hackathon
 
-OpenAI **Codex** wrote the engine — parser, matcher, store, daemon (~1,100 lines across 50+ sessions; rollouts on file). Human contributions: the fixture repo, ruling curation after the evasion incident, and integration glue. **Greptile** review history is the ruling source; **claude-mem** is the memory; **Stripe** webhook verification and **DoorDash Drive**'s 3× redelivery are the two seeded rulings — both real invariants from their docs.
+OpenAI **Codex** wrote the engine — parser, matcher, store, daemon (~1,100 lines across 50+ sessions; rollouts on file). The fixture repo, ruling curation after the evasion incident, docs and integration glue were completed outside Codex, with Claude Code assisting. **Greptile** review history is the ruling source; **claude-mem** is the memory; **Stripe** webhook verification and **DoorDash Drive**'s 3× redelivery are the two seeded rulings — both real invariants from their docs.
 
 <div align="center">
 
