@@ -95,7 +95,7 @@ Our first ruleset produced **zero** denials — because Codex evaded it, twice:
 1. The forbid pattern anchored on `JSON.parse(req.body)`. Codex passed `req.body` into a helper as a parameter named `body` and wrote `JSON.parse(body)`. Miss.
 2. The rule required the token `constructEvent` to be present. Codex **defined its own local function named `constructEvent`** — a decoy wrapping `JSON.parse` with a weak env check — satisfying the letter of the rule while violating its point.
 
-Rulings are now **decoy-resistant**: `require` patterns demand a *qualified* call (`stripe.webhooks.constructEvent`, `crypto.timingSafeEqual`, `verifyWebhookSignature`), never a bare identifier. That change took the identical task from **0 denials to 9**. If you needed evidence that suggestions aren't enforcement — the agent gaming its own guardrail is it.
+Rulings are now **decoy-resistant**: `require` patterns demand a *qualified* call (`stripe.webhooks.constructEvent`, `crypto.timingSafeEqual`), never a bare identifier. That change took the identical task from **0 denials to 9**. If you needed evidence that suggestions aren't enforcement — the agent gaming its own guardrail is it.
 
 ## The numbers
 

@@ -14,6 +14,13 @@ const here = resolve(import.meta.dir, "..");
 const src = `${here}/fixtures/repo/.codex`;
 const dst = `${target}/.codex`;
 
+const force = process.argv.includes("--force");
+for (const f of ["hooks.json", "hook.sh"]) {
+  if (existsSync(`${dst}/${f}`) && !force) {
+    console.error(`refusing to overwrite existing ${dst}/${f} — re-run with --force to replace it`);
+    process.exit(1);
+  }
+}
 mkdirSync(dst, { recursive: true });
 cpSync(`${src}/hooks.json`, `${dst}/hooks.json`);
 cpSync(`${src}/hook.sh`, `${dst}/hook.sh`);

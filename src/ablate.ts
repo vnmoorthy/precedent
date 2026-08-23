@@ -37,7 +37,7 @@ const denialCount = async (): Promise<number> => {
 function verdict(code: string): { violates: boolean; evidence: string } {
   const unverifiedParse = /JSON\.parse\(/.test(code);
   const qualifiedVerify =
-    /(stripe|Stripe)\.webhooks\.constructEvent|crypto\.timingSafeEqual|verifyWebhookSignature/.test(code);
+    /(stripe|Stripe)\.webhooks\.constructEvent|crypto\.timingSafeEqual/.test(code);
   const dedupes = /alreadyProcessed|markProcessed/.test(code);
   if (unverifiedParse && !qualifiedVerify)
     return { violates: true, evidence: "parses the body with no qualified signature check" };
