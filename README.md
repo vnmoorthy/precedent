@@ -18,6 +18,10 @@
 
 ---
 
+<img src="docs/img/board.png" alt="The Precedent board: value ledger and live deny decisions with provenance" width="100%">
+
+<p align="center"><em>The live board during a real Codex session — every card is a write the gate refused, priced in reviewer time.</em></p>
+
 ## The problem
 
 Agents now write most of the code. Reviewers are drowning — AI-generated PRs wait ~5× longer for review, and senior engineers write the **same review comment eleven times** because every fresh agent session starts with amnesia:
@@ -104,6 +108,30 @@ Rulings are now **decoy-resistant**: `require` patterns demand a *qualified* cal
 - **15** real denials logged against live Codex sessions, each with ruling id, path, latency
 - **2** rulings stored in claude-mem as first-class `type: "ruling"` observations
 - **9→0→9**: denials before hardening → after Codex's evasion → after decoy-resistance
+
+## What a denial is worth
+
+Every deny on the board is one of two things that now *didn't* happen:
+
+| Prevented event | Grounding |
+|---|---|
+| **A repeat review round** — the code owner re-explaining ruling #1 for the 5th time | Faros telemetry across 22,000 devs: median PR review time **+441%** since agent adoption; the board prices a round conservatively at 30 reviewer-minutes ≈ **$60** |
+| **A money bug in payment code** — forged webhooks marking orders paid (ruling #1), or a customer shipped 3× on one payment because DoorDash redelivers webhooks (ruling #2) | Both rulings encode documented provider semantics — Stripe signature verification, Drive's 3× redelivery |
+
+The deeper value is the asset class: today, review knowledge **evaporates** — every agent session relearns nothing. Rulings make it **compound**: each one permanently binds every future session, on every teammate's machine (CMEM Pro sync). The ledger on the board is the running receipt.
+
+### Battle-tested during the hackathon itself
+
+The gate was attacked three times in one afternoon — twice by the agent it governs, once by the host's reviewer — and hardened each time:
+
+1. **Codex dodged a forbid pattern** via a parameter rename → patterns broadened.
+2. **Codex defined a decoy `constructEvent`** to satisfy a require check → rulings now demand qualified calls only.
+3. **Greptile's review found an addition-only `@@` hunk bypass** (failed reconstruction skipped evaluation; a null line number skipped the deny) → both layers closed, with the bypass payload re-verified as DENIED. See [`docs/BUILDLOG.md`](docs/BUILDLOG.md).
+
+<p align="center">
+<img src="docs/img/landing.png" alt="Landing page" width="49%">
+<img src="docs/img/demo.png" alt="Interactive demo" width="49%">
+</p>
 
 ## Run it
 

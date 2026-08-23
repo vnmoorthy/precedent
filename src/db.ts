@@ -171,6 +171,12 @@ export class PrecedentStore {
 
     return { ...decision, id: Number(result.lastInsertRowid) };
   }
+
+  listDecisions(limit = 100): Decision[] {
+    return this.database
+      .query(`SELECT * FROM decisions ORDER BY id DESC LIMIT ?`)
+      .all(limit) as Decision[];
+  }
 }
 
 function migrate(database: Database): void {

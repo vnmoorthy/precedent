@@ -239,6 +239,9 @@ export async function startDaemon(options: {
       if (request.method === "GET" && url.pathname === "/rulings") {
         return json(store.listRulings());
       }
+      if (request.method === "GET" && url.pathname === "/decisions") {
+        return json(store.listDecisions());
+      }
       if (request.method === "GET" && url.pathname === "/events") {
         return sseResponse(clients);
       }

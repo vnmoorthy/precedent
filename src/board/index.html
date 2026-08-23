@@ -71,5 +71,6 @@ function add(d){
     <div class="meta">${esc(d.tool||'')} · ${(d.latency_ms||0).toFixed(1)}ms${d.ruling_id?' · ruling #'+d.ruling_id:''}</div>`;
   f.prepend(el);
 }
+fetch('/decisions').then(r=>r.json()).then(ds=>{ds.slice().reverse().forEach(add)});
 new EventSource('/events').onmessage=e=>{try{add(JSON.parse(e.data))}catch{}};
 </script>
