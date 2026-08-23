@@ -220,6 +220,11 @@ export async function startDaemon(options: {
     async fetch(request) {
       const url = new URL(request.url);
 
+      if (request.method === "GET" && (url.pathname === "/" || url.pathname === "/board")) {
+        return new Response(Bun.file(`${import.meta.dir}/board/index.html`), {
+          headers: { "content-type": "text/html; charset=utf-8" },
+        });
+      }
       if (request.method === "POST" && url.pathname === "/gate") {
         return handleGate(request, store, clients);
       }

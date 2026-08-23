@@ -1,0 +1,14 @@
+[
+  {
+    "run": 1,
+    "withMemory": true,
+    "violates": false,
+    "evidence": "verified signature + deduped delivery id"
+  },
+  {
+    "run": 1,
+    "withMemory": false,
+    "violates": true,
+    "evidence": "parses the body with no qualified signature check"
+  }
+]
