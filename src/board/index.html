@@ -31,9 +31,12 @@ padding-top:7px;border-top:1px solid var(--line)}
 <div class="sub">Your team said it once. The agent hears it every time.</div>
 <div class="stats">
   <div class="stat"><div class="big" id="nDeny">0</div><div class="l">denials</div></div>
+  <div class="stat"><div class="big" id="mins">0</div><div class="l">reviewer min reclaimed</div></div>
+  <div class="stat"><div class="big" id="usd">$0</div><div class="l">reclaimed (est.)</div></div>
   <div class="stat"><div class="big" id="nRule">0</div><div class="l">rulings</div></div>
   <div class="stat"><div class="big" id="ms">—</div><div class="l">median ms</div></div>
 </div>
+<div class="sub" style="margin-top:-8px">est. basis: one prevented repeat-review round ≈ 30 reviewer-minutes at $120/hr staff rate</div>
 <div class="grid">
   <div><h2>Ruling ledger</h2><div id="rulings"></div></div>
   <div><h2>Live decisions</h2><div id="feed"><div class="empty">waiting for the agent…</div></div></div>
@@ -54,7 +57,10 @@ function add(d){
   const f=document.getElementById('feed');
   if(f.querySelector('.empty'))f.innerHTML='';
   const deny=d.outcome==='deny';
-  if(deny){document.getElementById('nDeny').textContent=+document.getElementById('nDeny').textContent+1}
+  if(deny){const n=+document.getElementById('nDeny').textContent+1;
+    document.getElementById('nDeny').textContent=n;
+    document.getElementById('mins').textContent=n*30;
+    document.getElementById('usd').textContent='$'+(n*60).toLocaleString();}
   if(d.latency_ms){lat.push(d.latency_ms);lat.sort((a,b)=>a-b);
     document.getElementById('ms').textContent=lat[Math.floor(lat.length/2)].toFixed(1)}
   const el=document.createElement('div');
