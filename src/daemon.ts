@@ -141,7 +141,15 @@ async function prepareForEvaluation(
     // Read the canonical existing source, never a destination or unchecked
     // symlink path. Move destinations are validated but may not exist yet.
     const originalContent = await Bun.file(resolvedPaths.sourcePath).text();
-    return reconstructUpdatedFile(file, originalContent);
+    const reconstructed = reconstructUpdatedFile(file, originalContent);
+    if (reconstructed) return reconstructed;
+    // Reconstruction can fail on anchorless (addition-only) hunks. Do not fail
+    // open on adversarial patch shapes: approximate the post-patch content as
+    // original + added lines so forbid/require still evaluate. (Greptile P1.)
+    return {
+      ...file,
+      resultingContent: `${originalContent}\n${file.added.join("\n")}`,
+    };
   } catch {
     return null;
   }

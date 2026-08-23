@@ -155,7 +155,8 @@ export function evaluate(
     if (requirementIsPresent) continue;
 
     const lineNo = file.addedLineNumbers[candidateIndex];
-    if (file.operation === "update" && typeof lineNo !== "number") continue;
+    // Anchorless hunks have no reliable line number. That must not become a
+    // bypass: still deny, reporting a best-effort position. (Greptile P1.)
 
     return {
       ruling,
