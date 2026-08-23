@@ -1,0 +1,6 @@
+{
+  "name": "orders-service",
+  "type": "module",
+  "private": true,
+  "scripts": { "test": "bun test" }
+}
