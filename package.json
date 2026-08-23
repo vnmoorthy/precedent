@@ -1,17 +1,26 @@
 {
-  "name": "yc-the-fast-hackathon",
-  "module": "index.ts",
+  "name": "precedent",
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun --watch src/daemon.ts",
     "test": "bun test",
-    "daemon": "bun run src/daemon.ts"
+    "daemon": "bun run src/daemon.ts",
+    "ablate": "bun run src/ablate.ts",
+    "mem:push": "bun run src/mem.ts push",
+    "mem:pull": "bun run src/mem.ts pull"
   },
   "devDependencies": {
     "@types/bun": "^1.4.0"
   },
   "peerDependencies": {
     "typescript": "^5"
-  }
+  },
+  "version": "0.1.0",
+  "description": "Past code-review rulings, enforced as a write-time gate for coding agents.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vnmoorthy/precedent"
+  },
+  "homepage": "https://vnmoorthy.github.io/precedent/"
 }

@@ -2,5 +2,10 @@
   "name": "orders-service",
   "type": "module",
   "private": true,
-  "scripts": { "test": "bun test" }
+  "scripts": {
+    "test": "bun test"
+  },
+  "dependencies": {
+    "stripe": "^17.0.0"
+  }
 }

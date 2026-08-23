@@ -30,7 +30,7 @@ Rules files don't fix it. A `CLAUDE.md` or `AGENTS.md` is a *suggestion* the mod
 
 Precedent turns your team's review history into **binding precedent**, enforced at the moment the agent writes:
 
-1. **Mine** — recurring review objections (Greptile review comments, GitHub PR threads) are distilled into typed *rulings*: the rule, its path scope, the PR where it was first made, and how many times it recurred.
+1. **Mine** — recurring review objections are distilled into typed *rulings*: the rule, its path scope, the PR where it was first made, and how many times it recurred. (Today's two rulings ship as curated seeds — `source: "seed"` — encoding real Stripe and DoorDash Drive invariants; the Greptile-MCP mining pipeline is scaffolded in the schema, `source: 'greptile' | 'github' | 'seed'`.)
 2. **Remember** — rulings are stored in [claude-mem](https://github.com/thedotmack/claude-mem) as typed observations, so they persist across sessions, harnesses and machines.
 3. **Enforce** — a Codex `PreToolUse` hook intercepts every `apply_patch`. If the patch violates a ruling scoped to that path, the write is **denied in ~3ms**, with provenance:
 
