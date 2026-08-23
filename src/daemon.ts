@@ -188,7 +188,21 @@ async function handleGate(
       if (!prepared) continue;
 
       const violation = evaluate(prepared, relevantRulings);
-      if (!violation) continue;
+      if (!violation) {
+        // Log the clean write too — the gate's audit trail covers every
+        // governed write, not only refusals.
+        const allowed = store.insertDecision({
+          ts: new Date().toISOString(),
+          session_id: input.session_id ?? "unknown",
+          tool: "apply_patch",
+          path: file.relPath,
+          ruling_id: null,
+          outcome: "allow",
+          latency_ms: Number((performance.now() - startedAt).toFixed(3)),
+        });
+        broadcast(clients, allowed);
+        continue;
+      }
 
       const reason = denyReason(prepared, violation);
       const decision = store.insertDecision({

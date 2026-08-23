@@ -138,7 +138,7 @@ let active = true, busy = false, t0 = 0, timer = null;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 function startClock(){ t0 = Date.now(); timer = setInterval(()=>{clock.textContent=((Date.now()-t0)/1000).toFixed(1)+'s';},100); }
 function stopClock(){ clearInterval(timer); }
-async function line(html, pause=420){
+async function line(html, pause=180){
   screen.innerHTML += html + "\n";
   screen.scrollTop = screen.scrollHeight;
   await sleep(pause);
@@ -154,17 +154,17 @@ function setButtons(){
 
 async function runOn(){
   busy=true; setButtons(); clearScreen(); startClock();
-  await line(`<span class="d">$ codex exec "Create src/webhooks/doordash.ts …"</span>`, 700);
-  await line(`<span class="d">codex · reading src/orders.ts, src/webhooks/stripe.ts…</span>`, 900);
-  await line(`<span class="d">apply_patch  src/webhooks/doordash.ts</span>`, 500);
-  await line(DENY_1, 1400);
-  await line(`<span class="d">codex · understood — adding signature verification…</span>`, 900);
-  await line(`<span class="d">apply_patch  src/webhooks/doordash.ts</span>`, 500);
-  await line(DENY_2, 1300);
-  await line(`<span class="d">codex · deduping on external_delivery_id before fulfil…</span>`, 900);
-  await line(`<span class="g">ALLOWED</span> <span class="d">· apply_patch · src/webhooks/doordash.ts</span>`, 700);
-  await line(`\n<span class="g">✓ final file — compliant:</span>`, 300);
-  await line(`<span class="d">${COMPLIANT}</span>`, 400);
+  await line(`<span class="d">$ codex exec "Create src/webhooks/doordash.ts …"</span>`, 280);
+  await line(`<span class="d">codex · reading src/orders.ts, src/webhooks/stripe.ts…</span>`, 350);
+  await line(`<span class="d">apply_patch  src/webhooks/doordash.ts</span>`, 200);
+  await line(DENY_1, 260);
+  await line(`<span class="d">codex · understood — adding signature verification…</span>`, 350);
+  await line(`<span class="d">apply_patch  src/webhooks/doordash.ts</span>`, 200);
+  await line(DENY_2, 550);
+  await line(`<span class="d">codex · deduping on external_delivery_id before fulfil…</span>`, 350);
+  await line(`<span class="g">ALLOWED</span> <span class="d">· apply_patch · src/webhooks/doordash.ts</span>`, 280);
+  await line(`\n<span class="g">✓ final file — compliant:</span>`, 150);
+  await line(`<span class="d">${COMPLIANT}</span>`, 180);
   await line(`\n<span class="g">✓ bun test — 2 pass</span>  <span class="d">· verdict: verified signature + deduped delivery id</span>`);
   stopClock(); busy=false; setButtons();
 }
@@ -172,13 +172,13 @@ async function runOn(){
 async function runOff(){
   busy=true; setButtons(); clearScreen(); startClock();
   if(active){ await line(`<span class="a">ruling #1 is still ACTIVE — delete it first to see the ablation.</span>`); stopClock(); busy=false; setButtons(); return; }
-  await line(`<span class="d">$ codex exec "Create src/webhooks/doordash.ts …"   # identical prompt</span>`, 700);
-  await line(`<span class="d">codex · reading src/orders.ts, src/webhooks/stripe.ts…</span>`, 900);
-  await line(`<span class="d">apply_patch  src/webhooks/doordash.ts</span>`, 600);
-  await line(`<span class="d">· no ruling matched — gate silent ·</span>`, 800);
-  await line(`<span class="a">ALLOWED</span> <span class="d">· nothing in memory objects</span>`, 700);
-  await line(`\n<span class="r">✗ final file — violates:</span>`, 300);
-  await line(`<span class="d">${VIOLATING}</span>`, 400);
+  await line(`<span class="d">$ codex exec "Create src/webhooks/doordash.ts …"   # identical prompt</span>`, 280);
+  await line(`<span class="d">codex · reading src/orders.ts, src/webhooks/stripe.ts…</span>`, 350);
+  await line(`<span class="d">apply_patch  src/webhooks/doordash.ts</span>`, 260);
+  await line(`<span class="d">· no ruling matched — gate silent ·</span>`, 320);
+  await line(`<span class="a">ALLOWED</span> <span class="d">· nothing in memory objects</span>`, 280);
+  await line(`\n<span class="r">✗ final file — violates:</span>`, 150);
+  await line(`<span class="d">${VIOLATING}</span>`, 180);
   await line(`\n<span class="r">✗ verdict: parses the body with no qualified signature check</span>`);
   await line(`<span class="d">Same task. Same repo. Same model. The ruling was the only variable.</span>`);
   stopClock(); busy=false; setButtons();
