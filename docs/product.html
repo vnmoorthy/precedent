@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PRECEDENT — Product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--w:#fff;--dim:#9aa0a6;--faint:#4a4f55;--line:#26282b;--red:#ff3b30;--grn:#30d158}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:var(--w);font-family:"Barlow",Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+nav{display:flex;align-items:center;justify-content:space-between;padding:26px 42px}
+.logo{font-weight:700;font-size:17px;letter-spacing:.42em;text-transform:uppercase}
+.navlinks{display:flex;gap:30px}
+.navlinks a{font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;padding-bottom:3px;border-bottom:1px solid transparent}
+.navlinks a:hover{border-color:var(--w)}
+.wrap{max-width:1120px;margin:0 auto;padding:4vh 42px 12vh}
+.kick{font-family:"Barlow Condensed";font-size:14px;font-weight:600;letter-spacing:.34em;text-transform:uppercase;color:var(--dim);margin-bottom:14px}
+h1{font-size:clamp(36px,5.5vw,64px);font-weight:700;text-transform:uppercase;line-height:1}
+h2{font-family:"Barlow Condensed";font-size:16px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--w);margin:60px 0 18px}
+.sub{margin-top:18px;color:var(--dim);font-size:17px;line-height:1.7;max-width:56em}
+.sub b{color:var(--w)}
+.shotwrap{border:1px solid var(--line);margin-top:26px}
+.shotwrap img{display:block;width:100%}
+.cap{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--faint);padding:10px 14px;border-top:1px solid var(--line)}
+.verbs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.verb{background:#050607;padding:22px 24px}
+.verb h3{font-size:15px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.verb p{font-size:14px;color:var(--dim);line-height:1.6}
+.verb code{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--w)}
+.term{border:1px solid var(--line);background:#050607;padding:22px 26px;font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.7;white-space:pre-wrap;color:#cfd4da;overflow-x:auto}
+.d{color:var(--faint)}.g{color:var(--grn)}.r{color:var(--red)}
+.ctas{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+.btn{display:inline-block;border:2px solid var(--w);padding:14px 30px;font-size:12px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;transition:.2s}
+.btn:hover{background:var(--w);color:#000}
+.btn.solid{background:var(--w);color:#000}.btn.solid:hover{background:transparent;color:var(--w)}
+footer{border-top:1px solid var(--line);padding:40px 42px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">Precedent</a>
+  <div class="navlinks">
+    <a href="index.html">Home</a>
+    <a href="demo.html">Demo</a>
+    <a href="slides.html">Deck</a>
+    <a href="https://github.com/vnmoorthy/precedent">Source</a>
+  </div>
+</nav>
+<div class="wrap">
+  <div class="kick">The product</div>
+  <h1>A gate, a memory,<br>and a receipt.</h1>
+  <p class="sub">Precedent installs into any repo with one command. From then on, every write a coding
+  agent makes in that repo is checked against your team's rulings <b>before it lands</b> — denied with
+  provenance when it violates one, logged either way, and priced on a live ledger.</p>
+
+  <h2>What it does — eight verbs, all live today</h2>
+  <div class="verbs">
+    <div class="verb"><h3 style="color:var(--red)">Gates</h3><p>Violating <code>apply_patch</code> writes denied in ~2 ms, the original PR cited in the denial.</p></div>
+    <div class="verb"><h3>Corrects</h3><p>The agent reads the denial and rewrites compliantly — no human in the loop.</p></div>
+    <div class="verb"><h3>Audits</h3><p>Every governed write logged and live-streamed — allow and deny — <code>GET /decisions</code>.</p></div>
+    <div class="verb"><h3>Proves</h3><p>Built-in ablation: delete the ruling, the bug returns. Machine-classified.</p></div>
+    <div class="verb"><h3>Remembers</h3><p>Rulings persist as typed claude-mem observations, synced across machines.</p></div>
+    <div class="verb"><h3>Installs</h3><p><code>precedent init &lt;repo&gt;</code> — one command; refuses to clobber existing hooks.</p></div>
+    <div class="verb"><h3 style="color:var(--grn)">Prices</h3><p>The board and <code>bun run report</code> convert denials into reviewer-minutes and dollars.</p></div>
+    <div class="verb"><h3>Survives</h3><p>Attacked three times in one afternoon — two Codex evasions, one Greptile-found bypass. All closed.</p></div>
+  </div>
+
+  <h2>The board — a live session</h2>
+  <div class="shotwrap"><img src="img/board.png" alt="Precedent board with value ledger and deny cards">
+  <div class="cap">Real session data: every card is a governed write; red cards carry the ruling and the PR where your team first said it.</div></div>
+
+  <h2>The receipt — bun run report</h2>
+  <div class="term"><span class="d">$ bun run report</span>
+
+  PRECEDENT — audit report
+  ────────────────────────────────────────────
+  governed writes     8
+  allowed             2
+  denied              6
+  reviewer time est.  180 min reclaimed (~$360)
+  avg deny latency    2.5 ms
+
+  denials by ruling
+    #1  ×6  Verify the webhook signature with the provider SDK…
+
+  hottest paths
+    ×3  src/webhooks/doordash.ts</div>
+
+  <h2>Install</h2>
+  <div class="term"><span class="d">$</span> git clone https://github.com/vnmoorthy/precedent && cd precedent
+<span class="d">$</span> bun install && bun test          <span class="d"># 16 pass</span>
+<span class="d">$</span> bun run daemon &                 <span class="d"># gate + board on :4747</span>
+<span class="d">$</span> bun run src/init.ts ~/your-repo  <span class="d"># the repo is now governed</span></div>
+
+  <div class="ctas">
+    <a class="btn solid" href="demo.html">See it run</a>
+    <a class="btn" href="https://github.com/vnmoorthy/precedent">Source on GitHub</a>
+  </div>
+</div>
+<footer>Precedent · built with Codex · Greptile × Y Combinator Fast Hackathon 2026</footer>
+</body>
+</html>
