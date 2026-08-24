@@ -1,4 +1,26 @@
-# PRECEDENT — the 5-minute pitch
+# PRECEDENT — the short pitch (~2½ min, ~380 words)
+
+**COLD OPEN.** A senior engineer posted this and got two thousand upvotes: *"For the cost of hundreds of CPU hours and two minutes of their time, I'm now expected to review this."* They own the payments code. And they write the **same review comment eleven times** — because every agent session wakes up with amnesia.
+
+I'm Moorthy. This is **Precedent**. Say it once — the agent hears it every time.
+
+**THE GAP.** Review time is up 441% since agents started writing code. Rules files are suggestions the model drops. Review bots catch it *after* the PR exists. Nothing makes your team's decisions **binding at the moment the agent writes**.
+
+**LIVE DEMO.** [Terminal + board] This is live. I ask Codex to write a DoorDash webhook handler. Green cards — every write is being audited. Now it parses an unverified body in payment code — [red] — **DENIED, one millisecond.** Read it: *"Ruling #1 — first raised by you, PR #388, raised four times."* Your review history, enforced as law. And watch: the agent reads the denial and **fixes itself**. Verified signature. Deduplicated — because DoorDash redelivers every webhook three times. No human touched anything.
+
+**THE PROOF.** Same task, same model — I **delete the ruling from memory**, and Codex writes the vulnerable code again. Restore it — it doesn't. **The memory does the work, not the model.**
+
+**THE TWIST.** Our first ruleset? Zero denials — **Codex cheated**, building a decoy function to satisfy the rule. Then Greptile's reviewer found *another* bypass this afternoon. Three attacks in one day. The gate got stronger every time. That's the proof that suggestions aren't enforcement.
+
+**CLOSE.** Every denial is a review round that never happened and a money bug that never shipped — sixty dollars each on the live ledger. Greptile sells the reviewer's side; nobody sells the **author's side**. One command — `precedent init` — and your team's knowledge stops evaporating and starts **compounding**. Built in four hours with Codex, public now: **github.com/vnmoorthy/precedent**.
+
+We're not making agents weaker. We're making them trustworthy enough for **more** autonomy.
+
+**Precedent. Say it once.** [Hold.]
+
+---
+
+# The full 5-minute version (if you have the time)
 *~660 words ≈ 5 minutes at speaking pace. Stage directions in [brackets]. Memorize the cold open and the close; everything else can flex.*
 
 ---
